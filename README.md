@@ -1,6 +1,6 @@
 ## Requirements
 * The application requires Python >= 3.5
-* pyparsing installed `requirements.txt` :
+* Install requirements:
 ```sh
         python3 -m pip install -r requirements.txt
 ```
