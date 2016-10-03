@@ -33,5 +33,11 @@ class ParserTest(unittest.TestCase):
         command = self.parser.parse_command("PLACE 1,2,NORTH")
         self.assertTrue(isinstance(command, PlaceCommand))
 
+        command = self.parser.parse_command("PLACE_OBJECT")
+        self.assertTrue(isinstance(command, PlaceObjectCommand))
+
+        command = self.parser.parse_command("MAP")
+        self.assertTrue(isinstance(command, MapCommand))
+
 if __name__ == '__main__':
     unittest.main()
