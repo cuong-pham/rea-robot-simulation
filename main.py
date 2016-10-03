@@ -1,5 +1,6 @@
 from simulator.parser import Parser
 from simulator.robot import Robot
+from simulator.simulator import Simulator
 from simulator.constraint import BoundaryConstraint
 import argparse
 import sys, logging
@@ -34,17 +35,15 @@ def main(args):
 
     logging.basicConfig(level=log_level)
 
-    boundary_constraints = BoundaryConstraint(options.width, options.height)
-
-    robot = Robot([boundary_constraints])
+    simulator = Simulator(options.width, options.height)
 
     p = Parser()
 
     for line in options.input_file:
         command = p.parse_command(line)
         logging.info("Trying to apply command {}".format(command.name()))
-        command.apply(robot)
-        logging.debug("Current state of the robot {}".format(robot))
+        command.apply(simulator)
+        logging.debug("Current state of the robot {}".format(simulator.robot))
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv[1:]))

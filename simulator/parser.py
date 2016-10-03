@@ -4,7 +4,7 @@ import logging
 class Parser():
 
     facing_directions = ['NORTH','SOUTH','EAST','WEST']
-    simple_commands = ['LEFT','RIGHT','MOVE','REPORT']
+    simple_commands = ['LEFT','RIGHT','MOVE','REPORT','PLACE_OBJECT','MAP']
 
     digit = Word(nums).setParseAction(lambda x: int(x[0]))
     facing = Or([Literal(facing) for facing in facing_directions])

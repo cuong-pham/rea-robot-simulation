@@ -9,8 +9,16 @@ class BoundaryConstraint(Constraint):
         self.length_x = length_x
         self.length_y = length_y
 
-    def check(self, state):
-        if state.point.x in range(0,self.length_x) \
-                and state.point.y in range(0,self.length_y):
+    def check(self, point):
+        if point.x in range(0,self.length_x) \
+                and point.y in range(0,self.length_y):
             return True
         return False
+class ObjectConstraint(Constraint):
+    def __init__(self, point):
+        self.point = point
+
+    def check(self, point):
+        if point == self.point:
+            return False
+        return True

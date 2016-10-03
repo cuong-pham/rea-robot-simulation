@@ -2,7 +2,7 @@ import unittest
 import context
 import sys
 
-from simulator.constraint import BoundaryConstraint
+from simulator.constraint import BoundaryConstraint, ObjectConstraint
 from simulator.command import *
 from simulator.robot import *
 logging.disable(logging.CRITICAL)
@@ -11,10 +11,10 @@ from io import StringIO
 class CommandTest(unittest.TestCase):
 
     def setUp(self):
-        self.constraints = BoundaryConstraint(5,5)
+        self.constraints = [BoundaryConstraint(5,5)]
 
     def test_valid_bot_position(self):
-        robot = Robot([self.constraints])
+        robot = Robot(self.constraints)
         robot.state = State(Point(0,0),FacingDirection.NORTH.value)
 
         command = LeftCommand(['LEFT'])
@@ -33,6 +33,15 @@ class CommandTest(unittest.TestCase):
         command.apply(robot)
         self.assertTrue(robot.state == State(Point(0,0), FacingDirection.NORTH.value))
 
+
+        command = PlaceObjectCommand(['PLACE_OBJECT'])
+        command.apply(robot)
+        self.assertTrue(robot.state == State(Point(0,0), FacingDirection.NORTH.value))
+
+        command = MoveCommand(['MOVE'])
+        command.apply(robot)
+        self.assertTrue(robot.state == State(Point(0,0), FacingDirection.NORTH.value))
+
         out = StringIO()
         sys.stdout = out
         command = ReportCommand(['REPORT'])
@@ -40,7 +49,7 @@ class CommandTest(unittest.TestCase):
         self.assertTrue(out.getvalue().strip() == '0,0,NORTH')
 
     def test_invalid_bot_position(self):
-        robot = Robot([self.constraints])
+        robot = Robot(self.constraints)
         self.assertFalse(robot.is_ready())
 
         command = LeftCommand(['LEFT'])
@@ -56,14 +65,21 @@ class CommandTest(unittest.TestCase):
         command.apply(robot)
         self.assertFalse(robot.is_ready())
 
+        command = PlaceObjectCommand(['PLACE_OBJECT'])
+        command.apply(robot)
+        self.assertFalse(robot.is_ready())
+
+
         command = PlaceCommand(['PLACE', 4,4,'NORTH'])
         command.apply(robot)
         self.assertTrue(robot.is_ready())
+
 
         #Test bot cannot move when it's at the boundary
         command = MoveCommand(['MOVE'])
         command.apply(robot)
         self.assertTrue(robot.state == State(Point(4,4), FacingDirection.NORTH.value))
+
 
 
 if __name__ == '__main__':

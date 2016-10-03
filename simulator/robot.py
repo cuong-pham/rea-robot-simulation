@@ -8,7 +8,7 @@ class State():
         self.facing = facing
 
     def is_valid(self, constraints):
-        return all([constraint.check(self) for constraint in constraints])
+        return all([constraint.check(self.point) for constraint in constraints])
 
     def __repr__(self):
         return '{}{}'.format(type(self),self.__dict__)
@@ -20,12 +20,11 @@ class State():
 
 class Robot():
 
-    def __init__(self, constraints):
-        self.constraints = constraints
+    def __init__(self):
         self.state = None
 
-    def apply(self, state):
-        if state.is_valid(self.constraints):
+    def apply(self, state, constraints):
+        if state.is_valid(constraints):
             self.state = state
 
     def __str__(self):
